@@ -97,6 +97,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const [selected, setSelected] = useState<ChapterInfo[]>([]);
   const [editInfoModal, showEditInfoModal] = useState(false);
   const [isFabExtended, setIsFabExtended] = useState(true);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
 
   let flatlistRef = useRef<FlashList<ChapterInfo>>(null);
   let novelBottomSheetRef = useRef(null);
@@ -118,6 +119,11 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     if (useFabForContinueReading && lastRead) {
       setIsFabExtended(currentScrollPosition <= 0);
     }
+    setShowScrollToTop(currentScrollPosition > 200);
+  };
+
+  const scrollToTop = () => {
+    flatlistRef.current?.scrollToOffset({ offset: 0, animated: true });
   };
 
   useEffect(() => {
@@ -499,6 +505,21 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
               }}
             />
           ) : null}
+          {showScrollToTop ? (
+            <AnimatedFAB
+              style={[
+                styles.scrollTopFab,
+                { backgroundColor: theme.primary, marginBottom: bottomInset },
+              ]}
+              extended={isFabExtended}
+              color={theme.onPrimary}
+              uppercase={false}
+              label={getString('readerScreen.drawer.scrollToTop')}
+              icon="chevron-up"
+              animateFrom="left"
+              onPress={scrollToTop}
+            />
+          ) : null}
           <Portal>
             <Actionbar active={selected.length > 0} actions={actions} />
             <Snackbar
@@ -577,6 +598,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     margin: 16,
     right: 0,
+    bottom: 16,
+  },
+  scrollTopFab: {
+    position: 'absolute',
+    margin: 16,
+    left: 0,
     bottom: 16,
   },
 });
