@@ -511,10 +511,10 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                 styles.scrollTopFab,
                 { backgroundColor: theme.primary, marginBottom: bottomInset },
               ]}
-              extended={isFabExtended}
+              extended={false}
               color={theme.onPrimary}
               uppercase={false}
-              label={getString('readerScreen.drawer.scrollToTop')}
+              label=""
               icon="chevron-up"
               animateFrom="left"
               onPress={scrollToTop}
